@@ -1,0 +1,124 @@
+🔧 MANUAL FIX - Run These Commands Exactly
+===========================================
+
+The supabase folder is ALREADY in your Git repository.
+Adding it to .gitignore doesn't remove it - you must do that manually.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1: Check if supabase is tracked by Git
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+git ls-files | grep supabase
+
+If you see files listed → supabase IS tracked (problem!)
+If you see nothing → supabase is NOT tracked (good!)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 2: Remove supabase from Git tracking
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+git rm -r --cached supabase/
+
+This removes it from Git but keeps it on your computer.
+
+If you get "pathspec 'supabase/' did not match any files":
+→ It's already not tracked, skip to Step 3
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 3: Commit the change
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+git add .gitignore .npmignore .vercelignore
+git commit -m "Remove server files from Git to fix Vercel build"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 4: Verify it's gone
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+git ls-files | grep supabase
+
+You should see NOTHING now.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 5: Push to Git
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+git push
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 6: Deploy to Vercel
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Option A: Via Git (if you connected GitHub to Vercel)
+→ Just push (step 5) and Vercel auto-deploys
+
+Option B: Via CLI
+→ vercel --prod
+
+The build will now succeed! ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 7: Deploy server to Supabase
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+supabase functions deploy
+
+The server files are still on your computer, just not in Git.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ DONE!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Your app is now:
+- Frontend: Deployed on Vercel ✅
+- Backend: Deployed on Supabase ✅
+- No more JSR errors! 🎉
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️ IMPORTANT NOTES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. The supabase folder is STILL on your computer
+   → You can still edit and deploy it
+   → It's just not in Git anymore
+
+2. To version control server files separately:
+   → Create a new Git repo just for /supabase/
+   → Or use a backup service
+
+3. Future workflow:
+   → Frontend changes: git push (auto-deploys to Vercel)
+   → Backend changes: supabase functions deploy
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🆘 IF STILL FAILING:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Double-check Git doesn't have supabase:
+   git ls-files | grep supabase
+   → Should return NOTHING
+
+2. Check Vercel build logs:
+   → Does it mention "supabase" anywhere?
+   → If yes, the folder is still being uploaded
+
+3. Nuclear option - delete from Git history:
+   git filter-branch --tree-filter 'rm -rf supabase' HEAD
+   git push --force
+
+4. Contact me with:
+   → Output of: git ls-files | grep supabase
+   → Vercel build logs
+   → Contents of .gitignore
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

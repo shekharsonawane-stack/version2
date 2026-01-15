@@ -1,0 +1,295 @@
+═══════════════════════════════════════════════════════════════
+                                                               
+         📋 NETLIFY DEPLOYMENT CHECKLIST 📋                   
+                                                               
+═══════════════════════════════════════════════════════════════
+
+
+PRE-DEPLOYMENT CHECKLIST:
+───────────────────────────────────────────────────────────────
+
+Configuration Files:
+  [✅] netlify.toml exists
+  [✅] .npmrc exists (you edited manually)
+  [✅] .gitignore exists (you edited manually)
+  [✅] postcss.config.js exists
+  [✅] package.json has @tailwindcss/postcss
+  [✅] vite.config.ts configured
+
+Code Files:
+  [✅] /App.tsx exists
+  [✅] /styles/globals.css has @import "tailwindcss"
+  [✅] All components in /components/
+  [✅] Supabase utilities in /utils/supabase/
+
+Backend:
+  [✅] Supabase project created
+  [✅] Have SUPABASE_URL
+  [✅] Have SUPABASE_ANON_KEY
+
+
+DEPLOYMENT STEPS:
+───────────────────────────────────────────────────────────────
+
+□ STEP 1: Commit & Push
+  
+  Command:
+    git add .
+    git commit -m "Deploy to Netlify"
+    git push
+  
+  Expected result:
+    ✅ Files pushed to GitHub
+    ✅ No git errors
+
+
+□ STEP 2: Create Netlify Site
+  
+  Actions:
+    1. Visit https://app.netlify.com/
+    2. Click "Add new site"
+    3. Click "Import an existing project"
+    4. Choose "GitHub"
+    5. Select your repository
+  
+  Expected result:
+    ✅ Repository connected
+    ✅ Build settings auto-filled
+
+
+□ STEP 3: Verify Build Settings
+  
+  Should auto-fill from netlify.toml:
+    Build command:       npm run build
+    Publish directory:   dist
+    
+  If empty, enter them manually!
+
+
+□ STEP 4: Add Environment Variables
+  
+  Click "Show advanced" → "New variable"
+  
+  Variable 1:
+    Name:  VITE_SUPABASE_URL
+    Value: [paste your Supabase URL]
+  
+  Variable 2:
+    Name:  VITE_SUPABASE_ANON_KEY
+    Value: [paste your Supabase anon key]
+  
+  Expected result:
+    ✅ 2 variables added
+    ✅ Values are correct (no quotes!)
+
+
+□ STEP 5: Deploy!
+  
+  Action:
+    Click "Deploy site"
+  
+  Expected timeline:
+    ⏱️  Install dependencies: 30-60 seconds
+    ⏱️  Build: 30-60 seconds
+    ⏱️  Deploy: 10-20 seconds
+    ⏱️  Total: ~2-3 minutes
+
+
+POST-DEPLOYMENT CHECKLIST:
+───────────────────────────────────────────────────────────────
+
+□ Check Build Logs
+  
+  Location:
+    Netlify Dashboard → Deploys → [latest] → View logs
+  
+  Look for:
+    ✅ "Installing dependencies"
+    ✅ "@tailwindcss/postcss@4.0.0"
+    ✅ "Running build command"
+    ✅ "vite build"
+    ✅ "Build succeeded"
+    ✅ "Deploy succeeded"
+  
+  Red flags:
+    ❌ "npm error 404 @jsr"
+    ❌ "Build failed"
+    ❌ "Module not found"
+
+
+□ Test Main Site
+  
+  URL: https://[your-site].netlify.app/
+  
+  Check:
+    ✅ Page loads
+    ✅ Full styling (colors, fonts, layout)
+    ✅ Navigation works
+    ✅ Images load
+    ✅ No console errors (press F12)
+  
+  If broken:
+    → Check specific issue below
+
+
+□ Test Diagnostic Pages
+  
+  URL 1: https://[your-site].netlify.app/test.html
+  Expected:
+    ✅ Purple gradient page
+    ✅ Buttons visible
+    ✅ "Basic HTML Works!" message
+  
+  URL 2: https://[your-site].netlify.app/diagnostic.html
+  Expected:
+    ✅ List of tests with ✅ or ❌
+    ✅ Most/all tests pass
+
+
+□ Test Core Features
+  
+  Sign In:
+    ✅ Dialog opens
+    ✅ Can create account
+    ✅ Can sign in
+  
+  Products:
+    ✅ Product cards visible
+    ✅ Can click to view
+    ✅ Can add to cart
+  
+  Cart:
+    ✅ Items show in cart
+    ✅ Can proceed to checkout
+  
+  Favorites:
+    ✅ Heart icons work
+    ✅ Products save when signed in
+
+
+COMMON ISSUES & FIXES:
+───────────────────────────────────────────────────────────────
+
+Issue: Build fails with JSR error
+Symptom: "npm error 404 @jsr/supabase"
+Fix:
+  → Verify netlify.toml has: ignore = "supabase/"
+  → Redeploy from Netlify dashboard
+
+
+Issue: CSS not loading (black text on white)
+Symptom: Site loads but no colors/styling
+Fix:
+  → Check package.json has @tailwindcss/postcss
+  → Check globals.css has @import "tailwindcss"
+  → Clear cache and redeploy
+
+
+Issue: Blank white page
+Symptom: Nothing shows at all
+Fix:
+  → Open browser console (F12)
+  → Look for red error messages
+  → Check if JavaScript file loaded (Network tab)
+
+
+Issue: Environment variables not working
+Symptom: "Supabase URL not found" or similar
+Fix:
+  → Netlify Dashboard → Site settings → Environment variables
+  → Verify both variables exist
+  → Trigger new deploy
+
+
+Issue: 404 on routes
+Symptom: /about shows 404 error
+Fix:
+  → Verify netlify.toml has redirects section
+  → Should redirect /* to /index.html
+
+
+OPTIONAL POST-DEPLOYMENT TASKS:
+───────────────────────────────────────────────────────────────
+
+□ Change Site Name
+  
+  Action:
+    Netlify Dashboard → Site settings → Change site name
+  
+  Example:
+    vision-studio-furniture
+  
+  Result:
+    https://vision-studio-furniture.netlify.app
+
+
+□ Add Custom Domain
+  
+  Action:
+    Netlify Dashboard → Domain settings → Add custom domain
+  
+  Example:
+    visionstudio.com
+  
+  Setup:
+    → Add DNS records (Netlify provides instructions)
+    → SSL auto-provisions (5-10 minutes)
+
+
+□ Enable Deploy Notifications
+  
+  Action:
+    Netlify Dashboard → Site settings → Build & deploy → Deploy notifications
+  
+  Options:
+    → Email on deploy success/failure
+    → Slack integration
+    → Webhook
+
+
+FINAL VERIFICATION:
+───────────────────────────────────────────────────────────────
+
+□ Main site works:        https://[site].netlify.app/
+□ Diagnostic test passes: https://[site].netlify.app/diagnostic.html
+□ No console errors:      F12 → Console tab is clean
+□ All features work:      Can sign in, browse, add to cart
+□ Auto-deploy works:      Push to GitHub → Auto deploys
+
+
+═══════════════════════════════════════════════════════════════
+
+IF ALL CHECKED: 🎉 DEPLOYMENT SUCCESSFUL! 🎉
+
+Your Vision Studio furniture e-commerce site is LIVE!
+
+Share your URL! 🚀
+
+═══════════════════════════════════════════════════════════════
+
+
+NEED HELP?
+───────────────────────────────────────────────────────────────
+
+If any step fails:
+
+1. Copy the error message
+2. Check which step failed
+3. Look at the "Common Issues" section above
+4. If still stuck, tell me:
+   - Which step failed
+   - The exact error message
+   - What you see in the browser
+
+I'll help you fix it! 💪
+
+
+═══════════════════════════════════════════════════════════════
+
+Ready to deploy? ✅
+
+Run: git add . && git commit -m "Deploy" && git push
+
+Then: https://app.netlify.com/
+
+Let's go! 🚀

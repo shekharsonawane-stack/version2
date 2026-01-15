@@ -1,0 +1,153 @@
+═══════════════════════════════════════════════════════════════
+                                                               
+              🚀 DEPLOY TO NETLIFY - QUICK START 🚀          
+                                                               
+═══════════════════════════════════════════════════════════════
+
+
+WHY NETLIFY?
+───────────────────────────────────────────────────────────────
+
+✅ NO JSR ERROR issues (better than Vercel for this project)
+✅ Simpler build process
+✅ Better handling of monorepo structures
+✅ Free tier: 100GB bandwidth/month
+✅ Automatic HTTPS & CDN
+✅ Auto-deploys on every git push
+
+
+3-STEP DEPLOYMENT:
+───────────────────────────────────────────────────────────────
+
+STEP 1: Push to GitHub
+───────────────────────────────────────────────────────────────
+
+git add .
+git commit -m "Deploy to Netlify"
+git push
+
+
+STEP 2: Connect to Netlify
+───────────────────────────────────────────────────────────────
+
+1. Go to: https://app.netlify.com/
+2. Click "Add new site" → "Import an existing project"
+3. Choose "GitHub"
+4. Select your repository
+5. Netlify will auto-detect these settings:
+   • Build command: npm run build
+   • Publish directory: dist
+
+
+STEP 3: Add Environment Variables (Important!)
+───────────────────────────────────────────────────────────────
+
+Click "Show advanced" → "New variable"
+
+Add these TWO variables:
+
+Variable 1:
+  Name:  VITE_SUPABASE_URL
+  Value: [Your Supabase URL - from Supabase Dashboard → Settings → API]
+
+Variable 2:
+  Name:  VITE_SUPABASE_ANON_KEY
+  Value: [Your Supabase anon key - from Supabase Dashboard → Settings → API]
+
+Then click "Deploy site"
+
+
+DONE! ✅
+───────────────────────────────────────────────────────────────
+
+⏱️  Wait 2-3 minutes for deployment
+
+🌐 You'll get a URL like: https://random-name.netlify.app
+
+✅ Your site will be LIVE with:
+   • Full styling (Tailwind CSS working)
+   • All features functional
+   • No JSR errors!
+   • Auto-deploy on every git push
+
+
+OPTIONAL: Change Site Name
+───────────────────────────────────────────────────────────────
+
+After deployment:
+
+1. Netlify Dashboard → Site settings
+2. Click "Change site name"
+3. Enter: vision-studio-furniture
+4. New URL: https://vision-studio-furniture.netlify.app
+
+
+ALTERNATIVE: Use Automated Script
+───────────────────────────────────────────────────────────────
+
+Mac/Linux:
+  chmod +x deploy-netlify.sh
+  ./deploy-netlify.sh
+
+Windows:
+  deploy-netlify.bat
+
+
+WHAT FILES WERE CREATED FOR NETLIFY:
+───────────────────────────────────────────────────────────────
+
+✅ netlify.toml       → Netlify configuration
+✅ .npmrc             → npm settings (you edited manually)
+✅ .gitignore         → Git ignores (you edited manually)
+✅ postcss.config.js  → Tailwind CSS processor
+
+
+HOW IT AVOIDS THE JSR ERROR:
+───────────────────────────────────────────────────────────────
+
+netlify.toml contains:
+
+  [build]
+    ignore = "supabase/"
+
+This tells Netlify to SKIP the supabase/ folder during build,
+so it never tries to install JSR packages!
+
+Problem solved! ✨
+
+
+VERIFY DEPLOYMENT:
+───────────────────────────────────────────────────────────────
+
+After deployment, test these URLs:
+
+Main site:
+  https://your-site.netlify.app/
+
+Diagnostic pages:
+  https://your-site.netlify.app/test.html
+  https://your-site.netlify.app/diagnostic.html
+
+All should work perfectly! ✅
+
+
+═══════════════════════════════════════════════════════════════
+
+JUST DO THIS NOW:
+
+1. git add . && git commit -m "Deploy" && git push
+
+2. Visit: https://app.netlify.com/
+
+3. Click "Add new site" → Import from GitHub → Select repo
+
+4. Add environment variables (VITE_SUPABASE_URL & VITE_SUPABASE_ANON_KEY)
+
+5. Click "Deploy site"
+
+DONE! 🚀
+
+═══════════════════════════════════════════════════════════════
+
+
+Your site will be live in ~3 minutes!
